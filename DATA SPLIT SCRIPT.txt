@@ -1,0 +1,36 @@
+--------------------------------------------------------------------------------------------------------
+/* This script splits a large CSV file into smaller chunks for easier processing. */
+import pandas as pd
+import os
+
+# ── config ──────────────────────────────────────────
+INPUT_FILE   = "complaints.csv"
+OUTPUT_FOLDER = "splits"
+CHUNK_SIZE   = 2000000        # rows per chunk, adjust as needed
+# ────────────────────────────────────────────────────
+
+# Create output folder if it doesn't exist
+os.makedirs(OUTPUT_FOLDER, exist_ok=True)
+
+# Read the full file
+df = pd.read_csv("complaints.csv")
+total_rows = len(df)
+total_chunks = (total_rows // CHUNK_SIZE) + 1
+
+print(f"Total rows    : {total_rows:,}")
+print(f"Chunk size    : {CHUNK_SIZE:,}")
+print(f"Total chunks  : {total_chunks}")
+print("-" * 35)
+
+# Split and save each chunk
+for i, start in enumerate(range(0, total_rows, CHUNK_SIZE)):
+    chunk = df.iloc[start : start + CHUNK_SIZE]
+    filename = f"{OUTPUT_FOLDER}/complaints_part_{i+1}.csv"
+    chunk.to_csv(filename, index=False)
+    print(f"Chunk {i+1:>3} → {filename}  ({len(chunk):,} rows)")
+
+print("-" * 35)
+print(f"Done! {total_chunks} files saved to '{OUTPUT_FOLDER}' folder")
+
+---------------------------------------********************--------------------------------------------
+

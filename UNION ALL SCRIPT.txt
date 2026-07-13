@@ -1,0 +1,37 @@
+%sql
+--SQL Query scripts to unit all the splitted data in to one table
+CREATE OR REPLACE TABLE trafficing_prototype.business.complaints_combined
+TBLPROPERTIES ('delta.columnMapping.mode' = 'name')
+AS
+SELECT 
+  CAST(`Date received` AS DATE) AS `Date received`,
+  Product,
+  `Sub-product`,
+  Issue,
+  `Sub-issue`,
+  `Consumer complaint narrative`,
+  `Company public response`,
+  Company,
+  State,
+  `ZIP code`,
+  Tags,
+  `Submitted via`,
+  CAST(`Date sent to company` AS DATE) AS `Date sent to company`,
+  `Company response to consumer`,
+  `Timely response?`,
+  `Complaint ID`
+FROM trafficing_prototype.business.complaints_part_1
+UNION ALL
+SELECT * FROM trafficing_prototype.business.complaints_part_2
+UNION ALL
+SELECT * FROM trafficing_prototype.business.complaints_part_3
+UNION ALL
+SELECT * FROM trafficing_prototype.business.complaints_part_4
+UNION ALL
+SELECT * FROM trafficing_prototype.business.complaints_part_5
+UNION ALL
+SELECT * FROM trafficing_prototype.business.complaints_part_6
+UNION ALL
+SELECT * FROM trafficing_prototype.business.complaints_part_7
+UNION ALL
+SELECT * FROM trafficing_prototype.business.complaints_part_8
